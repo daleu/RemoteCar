@@ -94,7 +94,7 @@
                 ap:lineLabelRotationBottom="-45"
                 ap:lineLabels="left|bottom"
                 ap:rangeTitle="range"
-                ap:title="A Simple XY Plot" />
+                ap:title="Accelerometer" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
