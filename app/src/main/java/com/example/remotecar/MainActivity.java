@@ -142,10 +142,16 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
 
                     String direction = "d3\n";
-                    if(globalAngle==0 && globalStrength==0){
+                    if(globalStrength<50){
                         direction = "d3\n";
                     }
-                    else direction = "d1\n";
+                    else {
+                        if(globalAngle>=45 && globalAngle<=135) direction = "d1\n";
+                        else if(globalAngle>135 && globalAngle<225) direction = "d5\n";
+                        else if(globalAngle>=225 && globalAngle<=315) direction = "d2\n";
+                        else if((globalAngle>315 && globalAngle<=360) || (globalAngle>=0 && globalAngle<45)) direction = "d4\n";
+                        else direction = "d5\n";
+                    }
 
                     long time = System.currentTimeMillis();
 
