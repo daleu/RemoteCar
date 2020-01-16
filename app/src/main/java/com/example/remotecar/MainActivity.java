@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     byte buffer[];
     int bufferPosition;
     boolean stopThread;
+    private String prevDirection;
+    private long prevDirectionTime;
     int globalAngle = 0;
     int globalStrength = 0;
 
@@ -64,13 +66,7 @@ public class MainActivity extends AppCompatActivity {
         stopButton.setEnabled(bool);
         textView.setEnabled(bool);
         if(bool){
-
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    //Thread.sleep(1000);
-                }
-            });
+            final long DELAY=500;
 
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -83,17 +79,22 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else direction = "d1\n";
 
-                    try {
-                        outputStream.write(direction.getBytes());
-                        //outputStream.flush();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    long time = System.currentTimeMillis();
 
-                    handler.postDelayed(this,1000);
+                    if(!direction.equals(prevDirection) && (time - prevDirectionTime) >= DELAY) {
+                        try {
+                            outputStream.write(direction.getBytes());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        prevDirection = direction;
+                        prevDirectionTime = time;
+                    }
+                    handler.postDelayed(this,DELAY);
 
                 }
-            }, 1000);
+            }, DELAY);
             joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
                 @Override
                 public void onMove(int angle, int strength) {
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("Angle",String.valueOf(angle));
                     Log.e("Strenght",String.valueOf(strength));
                 }
-            }, 1000);
+            });
         }
 
     }
